@@ -32,14 +32,25 @@ async function submitPost() {
   } catch (error) {
     console.error("Error submitting post 💀💀💀:", error);
   }
-
-  window.onload = async () => {
-    try {
-      const response = await fetch("/api/posts");
-      const posts = await response.json();
-      posts.forEach((post) => renderPost(post));
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    }
-  };
 }
+
+window.onload = async () => {
+  try {
+    const response = await fetch("/api/posts");
+    const posts = await response.json();
+    posts.forEach((post) => renderPost(post));
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
+};
+
+setInterval( async () => {
+  try {
+    const response = await fetch("/api/posts");
+    const posts = await response.json();
+    document.getElementById("feed").innerHTML = "";
+    posts.forEach((post) => renderPost(post));
+  } catch (error) {
+    console.error("Polling Failed with error", error);
+  }
+}, 5000);
